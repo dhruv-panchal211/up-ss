@@ -21,10 +21,10 @@ const Master = (props) => {
         <h1>Loading....</h1>
       ) : (
         <div className="flex">
-          <aside>
+          <aside className="max-h-[100vh]">
             <SidebarComponent />
           </aside>
-          <main className="w-full p-3 bg-primary max-h-[100vh] overflow-scroll">
+          <main className="w-full px-3 bg-primary max-h-[100vh] overflow-scroll">
             {props?.children}
           </main>
           {/* <Footer /> */}

@@ -20,7 +20,7 @@ const AuthLayout = (props) => {
         <h1>Loading....</h1>
       ) : (
         <div className="flex">
-          <main className="w-full p-3 bg-primary max-h-[100vh] overflow-scroll">
+          <main className="w-full bg-primary max-h-[100vh] overflow-scroll">
             {props?.children}
           </main>
           {/* <Footer /> */}

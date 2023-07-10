@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import { Link } from 'react-router-dom';
 
 const SidebarComponent = () => {
 	return (
@@ -30,7 +31,7 @@ const SidebarComponent = () => {
 						},
 					}}>
 					<SubMenu label="Quick Sale">
-						<MenuItem icon={<DashboardIcon fontSize="small" />}>Customer</MenuItem>
+						<MenuItem component={<Link to="/customer" />} icon={<DashboardIcon fontSize="small" />}>Customer</MenuItem>
 						<MenuItem icon={<DashboardIcon fontSize="small" />}>Appointment</MenuItem>
 						<MenuItem icon={<DashboardIcon fontSize="small" />}>Tanning Plan</MenuItem>
 						<MenuItem icon={<DashboardIcon fontSize="small" />}>

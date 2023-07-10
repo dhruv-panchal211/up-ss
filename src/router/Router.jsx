@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Master from "../layout/Master";
 import Protected from "../layout/PrivateRoute";
 import AuthState from "../context/AuthState";
+import AuthLayout from "../layout/AuthLayout";
 
 // Lazy load pages
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
@@ -15,10 +16,16 @@ const Router = () => {
   return (
     <AuthState>
       <BrowserRouter>
-        <Master>
+        <AuthLayout>
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
               <Route path="/login" element={<Login />} />
+            </Routes>
+          </Suspense>
+        </AuthLayout>
+        <Master>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
               <Route
                 path="/"
                 element={

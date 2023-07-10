@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContext";
-import SidebarComponent from "../component/common/Sidebar";
 
-const Master = (props) => {
+const AuthLayout = (props) => {
   const [loading, setLoading] = useState(true);
   const authContext = useContext(AuthContext);
   const { loadUser } = authContext;
@@ -21,10 +20,7 @@ const Master = (props) => {
         <h1>Loading....</h1>
       ) : (
         <div className="flex">
-          <aside className="max-h-[100vh]">
-            <SidebarComponent />
-          </aside>
-          <main className="w-full px-3 bg-primary max-h-[100vh] overflow-scroll">
+          <main className="w-full bg-primary max-h-[100vh] overflow-scroll">
             {props?.children}
           </main>
           {/* <Footer /> */}
@@ -34,4 +30,4 @@ const Master = (props) => {
   );
 };
 
-export default Master;
+export default AuthLayout;

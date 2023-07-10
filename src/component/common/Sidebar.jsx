@@ -1,14 +1,13 @@
-import React from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 
 const SidebarComponent = () => {
   return (
-    <div className="h-[100vh] border-r">
+    <div className="h-[100vh] overflow-y-scroll border-r">
       <Sidebar>
         <Menu
           menuItemStyles={{
-            button: ({ level, active, disabled }) => {
+            button: ({ level, active }) => {
               // if (level === 0 || level === 1) {
               return {
                 color: active && level === 0 ? "white" : "#0F76BC",
@@ -38,7 +37,7 @@ const SidebarComponent = () => {
               Appointment
             </MenuItem>
             <MenuItem icon={<DashboardIcon fontSize="small" />}>
-              Tanning Therapy Plan
+              Tanning Plan
             </MenuItem>
             <MenuItem icon={<DashboardIcon fontSize="small" />}>
               Tanning Session
@@ -72,7 +71,7 @@ const SidebarComponent = () => {
               Appointment
             </MenuItem>
             <MenuItem icon={<DashboardIcon fontSize="small" />}>
-              Tanning Therapy
+              Tanning
             </MenuItem>
             <MenuItem icon={<DashboardIcon fontSize="small" />}>
               Tanning Session
@@ -86,7 +85,7 @@ const SidebarComponent = () => {
               Appointment
             </MenuItem>
             <MenuItem icon={<DashboardIcon fontSize="small" />}>
-              Tanning Therapy
+              Tanning
             </MenuItem>
             <MenuItem icon={<DashboardIcon fontSize="small" />}>
               Tanning Session

@@ -11,6 +11,7 @@ import AuthLayout from "../layout/AuthLayout";
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
 const PageNotFound = lazy(() => import("../pages/PageNotFound"));
 const Login = lazy(() => import("../pages/LoginPage"));
+const Customer = lazy(() => import("../pages/Customer"));
 
 const Router = () => {
   return (
@@ -35,6 +36,8 @@ const Router = () => {
                 }
               />
               <Route path="*" element={<PageNotFound />} />
+              {/* <Route path="/customer" element={<Protected><Customer /></Protected>} /> */}
+              <Route path="/customer" element={<Customer />} />
             </Routes>
           </Suspense>
         </Master>

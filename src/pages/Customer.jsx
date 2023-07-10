@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Input from "../component/common/Input";
+import { Card } from "@mui/material";
 
 const Customer = () => {
 	const [customerData, setCustomerData] = useState({
@@ -73,35 +74,37 @@ const Customer = () => {
 	}, [customerData]);
 
 	return (
-		<div className="mx-6">
-			<h3 className="mb-6 text-xl">Salon Customer</h3>
-			<div>
-				<div className="grid grid-cols-2 gap-6">
-					{customerForm.map((field, index) => (
-						<Input
-							key={index}
-							label={
-								field.id === "fullName" &&
-								(customerData["firstName"].length > 0 ||
-									customerData["lastName"].length > 0)
-									? null
-									: field.label
-							}
-							className="col-span-1 mx-2"
-							disabled={field.disabled}
-							type={field.type}
-							value={
-								field.id === "fullName"
-									? customerData["firstName"] + " " + customerData["lastName"]
-									: customerData[field.id]
-							}
-							setValue={(val) =>
-								setCustomerData((prev) => ({ ...prev, [field.id]: val }))
-							}
-						/>
-					))}
+		<div>
+			<Card elevation={16} className="p-4 m-6">
+				<h3 className="mb-6 text-xl">Salon Customer</h3>
+				<div>
+					<div className="grid grid-cols-2 gap-6">
+						{customerForm.map((field, index) => (
+							<Input
+								key={index}
+								label={
+									field.id === "fullName" &&
+									(customerData["firstName"].length > 0 ||
+										customerData["lastName"].length > 0)
+										? null
+										: field.label
+								}
+								className="col-span-1 mx-2"
+								disabled={field.disabled}
+								type={field.type}
+								value={
+									field.id === "fullName"
+										? customerData["firstName"] + " " + customerData["lastName"]
+										: customerData[field.id]
+								}
+								setValue={(val) =>
+									setCustomerData((prev) => ({ ...prev, [field.id]: val }))
+								}
+							/>
+						))}
+					</div>
 				</div>
-			</div>
+			</Card>
 		</div>
 	);
 };

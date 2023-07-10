@@ -4,7 +4,7 @@ const Input = ({ required, label, type, disabled, value, setValue }) => {
 	return (
 		<TextField
 			required={required}
-			variant="filled"
+			variant="outlined"
 			disabled={disabled}
 			type={type}
 			label={label}

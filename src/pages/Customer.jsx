@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Input from "../component/common/Input";
-import { Card } from "@mui/material";
+import { Card, InputLabel, MenuItem, Select } from "@mui/material";
 
 const Customer = () => {
 	const [customerData, setCustomerData] = useState({
@@ -13,6 +13,7 @@ const Customer = () => {
 		phone: "",
 		gender: "",
 		dob: "",
+		bloodGroup: "",
 	});
 
 	const customerForm = [
@@ -20,6 +21,7 @@ const Customer = () => {
 			id: "firstName",
 			label: "First Name",
 			type: "text",
+			required: true,
 		},
 		{
 			id: "status",
@@ -62,6 +64,7 @@ const Customer = () => {
 			id: "gender",
 			label: "Gender",
 			type: "text",
+			required: true,
 		},
 		{
 			id: "dob",
@@ -69,19 +72,29 @@ const Customer = () => {
 		},
 	];
 
+	const bloodGroups = [
+		"O Positive",
+		"O Negative",
+		"A Positive",
+		"A Negative",
+		"B Positive",
+		"B Negative",
+		"AB Positive",
+		"AB Negative",
+	];
+
 	useEffect(() => {
 		console.log("data", customerData);
 	}, [customerData]);
 
 	return (
-		<div>
-			<Card elevation={16} className="p-4 m-6">
-				<h3 className="mb-6 text-xl">Salon Customer</h3>
-				<div>
-					<div className="grid grid-cols-2 gap-6">
-						{customerForm.map((field, index) => (
+		<div className="m-6">
+			<h3 className="mb-6 text-xl">Salon Customer</h3>
+			<div>
+				<div className="grid grid-cols-2 gap-6">
+					{customerForm.map((field) => (
+						<Card key={field.id} elevation={16} className="col-span-1 !rounded-2xl">
 							<Input
-								key={index}
 								label={
 									field.id === "fullName" &&
 									(customerData["firstName"].length > 0 ||
@@ -89,9 +102,10 @@ const Customer = () => {
 										? null
 										: field.label
 								}
-								className="col-span-1 mx-2"
+								className="w-full rounded-2xl"
 								disabled={field.disabled}
 								type={field.type}
+								required={field.required}
 								value={
 									field.id === "fullName"
 										? customerData["firstName"] + " " + customerData["lastName"]
@@ -101,10 +115,34 @@ const Customer = () => {
 									setCustomerData((prev) => ({ ...prev, [field.id]: val }))
 								}
 							/>
-						))}
-					</div>
+						</Card>
+					))}
+					<Card elevation={16} className="col-span-1 !rounded-2xl">
+						<Select
+							fullWidth
+							value={customerData.bloodGroup}
+							onChange={(event) =>
+								setCustomerData((prev) => ({
+									...prev,
+									bloodGroup: event.target.value,
+								}))
+							}>
+							<MenuItem disabled defaultChecked>
+								Blood Group
+							</MenuItem>
+							{bloodGroups.map((group, index) => (
+								<MenuItem key={index} value={group}>
+									{group}
+								</MenuItem>
+							))}
+						</Select>
+					</Card>
 				</div>
-			</Card>
+				<hr className="my-8" />
+				<div>
+					<h3 className="mb-6 text-xl">More Information</h3>
+				</div>
+			</div>
 		</div>
 	);
 };

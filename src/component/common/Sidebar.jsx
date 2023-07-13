@@ -41,12 +41,24 @@ const SidebarComponent = () => {
               component={<Link to="/tanning-appointment" />}
               icon={<DashboardIcon fontSize="small" />}
             >
-              Appointment
+              Tanning Appointment
             </MenuItem>
-            <MenuItem icon={<DashboardIcon fontSize="small" />}>
+            <MenuItem
+              component={<Link to="tanning-type/add" />}
+              icon={<DashboardIcon fontSize="small" />}
+            >
+              Tanning Type
+            </MenuItem>
+            <MenuItem
+              component={<Link to="tanning-plan" />}
+              icon={<DashboardIcon fontSize="small" />}
+            >
               Tanning Plan
             </MenuItem>
-            <MenuItem icon={<DashboardIcon fontSize="small" />}>
+            <MenuItem
+              component={<Link to="tanning-session" />}
+              icon={<DashboardIcon fontSize="small" />}
+            >
               Tanning Session
             </MenuItem>
             <MenuItem icon={<DashboardIcon fontSize="small" />}>

@@ -16,11 +16,13 @@
     "@mui/material": "^5.13.7",
     "axios": "^1.4.0",
     "chart.js": "^4.3.0",
+    "dayjs": "^1.11.9",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-pro-sidebar": "^1.1.0-alpha.1",
-    "react-router-dom": "^6.14.1"
+    "react-router-dom": "^6.14.1",
+    "react-tailwindcss-datepicker": "^1.6.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.14",

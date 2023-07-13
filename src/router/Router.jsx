@@ -12,7 +12,27 @@ const PageNotFound = lazy(() => import("../pages/PageNotFound"));
 const Login = lazy(() => import("../pages/LoginPage"));
 const CustomerList = lazy(() => import("../pages/customer/CustomerList"));
 const CreateCustomer = lazy(() => import("../pages/customer/CreateCustomer"));
-const TanningAppointment = lazy(() => import("../pages/TanningAppointment"));
+const AddTanningAppointment = lazy(() =>
+  import("../pages/tanningAppoinment/AddTanningAppointment")
+);
+const TanningAppointmentList = lazy(() =>
+  import("../pages/tanningAppoinment/TanningAppointmentList")
+);
+const AddTanningType = lazy(() =>
+  import("../pages/tanningType/AddTanningType")
+);
+const AddTanningPlan = lazy(() =>
+  import("../pages/tanningPlan/AddTanningPlan")
+);
+const TanningPlanList = lazy(() =>
+  import("../pages/tanningPlan/TanningPlanList")
+);
+const TanningSessionList = lazy(() =>
+  import("../pages/tanningSession/TanningSessionList")
+);
+const AddTanningSession = lazy(() =>
+  import("../pages/tanningSession/AddTanningSession")
+);
 
 const Router = () => {
   return (
@@ -42,7 +62,19 @@ const Router = () => {
               {/* <Route path="/tanning-appointment" element={<Protected><TanningAppointment /></Protected>} /> */}
               <Route
                 path="/tanning-appointment"
-                element={<TanningAppointment />}
+                element={<TanningAppointmentList />}
+              />
+              <Route
+                path="/tanning-appointment/add"
+                element={<AddTanningAppointment />}
+              />
+              <Route path="/tanning-type/add" element={<AddTanningType />} />
+              <Route path="/tanning-plan" element={<TanningPlanList />} />
+              <Route path="/tanning-plan/add" element={<AddTanningPlan />} />
+              <Route path="/tanning-session" element={<TanningSessionList />} />
+              <Route
+                path="/tanning-session/add"
+                element={<AddTanningSession />}
               />
             </Route>
             <Route path="*" element={<PageNotFound />} />

@@ -1,10 +1,10 @@
 import { useReducer } from "react";
-import axios from "axios";
 
 import AuthContext from "./AuthContext";
 import AuthReducer from "./AuthReducer";
 
 import { LOAD_USER, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT } from "./types";
+import axiosPrivate from "../api/BaseURL";
 
 const AuthState = (props) => {
   const initialState = {
@@ -32,8 +32,8 @@ const AuthState = (props) => {
     };
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
+      const res = await axiosPrivate.post(
+        `${import.meta.env.VITE_BACKEND_URL}api/method/login`,
         formData,
         config
       );

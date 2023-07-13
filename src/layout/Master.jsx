@@ -1,36 +1,17 @@
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "../context/AuthContext";
 import SidebarComponent from "../component/common/Sidebar";
+import { Outlet } from "react-router-dom";
 
-const Master = (props) => {
-  const [loading, setLoading] = useState(true);
-  const authContext = useContext(AuthContext);
-  const { loadUser } = authContext;
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      loadUser();
-    }, 500);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+const Master = () => {
   return (
-    <>
-      {loading ? (
-        <h1>Loading....</h1>
-      ) : (
-        <div className="flex">
-          <aside className="max-h-[100vh]">
-            <SidebarComponent />
-          </aside>
-          <main className="w-full px-3 bg-primary max-h-[100vh] overflow-scroll">
-            {props?.children}
-          </main>
-          {/* <Footer /> */}
-        </div>
-      )}
-    </>
+    <div className="flex">
+      <aside className="max-h-[100vh]">
+        <SidebarComponent />
+      </aside>
+      <main className="w-full px-3 bg-primary max-h-[100vh] overflow-scroll">
+        <Outlet />
+      </main>
+      {/* <Footer /> */}
+    </div>
   );
 };
 

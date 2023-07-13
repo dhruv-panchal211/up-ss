@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import axiosPrivate from "../api/BaseURL";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -49,23 +50,21 @@ const LoginPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log();
+    console.log("Submit", formData);
+    axiosPrivate.post("api/method/login", "", {
+      params: {
+        usr: formData.email,
+        pwd: formData.password,
+      },
+    });
   };
-
-  console.log("formData", formData);
 
   return (
     <Container
-      maxWidth="sm"
-      sx={{
-        py: {
-          xs: "60px",
-          md: "240px",
-        },
-        height: "100vh",
-      }}
+      maxWidth="lg"
+      className="h-[100vh] !flex items-center justify-center my-auto"
     >
-      <Card elevation={16} sx={{ p: 4 }}>
+      <Card elevation={16} className="!p-5">
         <Box
           sx={{
             alignItems: "center",

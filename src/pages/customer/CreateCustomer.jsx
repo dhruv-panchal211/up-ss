@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import Input from "../../component/common/Input";
 import { Button, Card, MenuItem, TextField } from "@mui/material";
 import axiosPrivate from "../../api/BaseURL";
+import { useLocation, useParams } from "react-router-dom";
 
-const Customer = () => {
+const Customer = ({ mode }) => {
+  const params = useLocation();
+
   const [customerData, setCustomerData] = useState({
     firstName: "",
     lastName: "",
@@ -121,14 +124,55 @@ const Customer = () => {
   ];
 
   useEffect(() => {
-    console.log("data", customerData);
-  }, [customerData]);
+    if (mode === "edit") {
+      axiosPrivate.get(`api/resource/Customer/${params.state}`).then((res) => {
+        console.log("res", res);
+        setCustomerData((prev) => ({
+          ...prev,
+          customer_name: res.data.data.customer_name,
+          customer_type: res.data.data.customer_type,
+          customer_group: res.data.data.customer_group,
+          territory: res.data.data.territory,
+        }));
+      });
+    }
+  }, [params, mode]);
 
-  const handleSubmitData = () => {
-    axiosPrivate.post("api/resource/Cusomer", "", {
+  const handleSubmitData = async () => {
+    // const params = `customer_name=${customerData.customer_name}&customer_type=${customerData.customer_type}&customer_group=${customerData.customer_group}&territory=${customerData.territory}`;
+
+    // console.log(JSON.stringify(params));
+    // const response = await fetch(
+    //   `${
+    //     import.meta.env.VITE_BACKEND_URL
+    //   }api/resource/Customer?${params.toString()}`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //       Authorization: "Basic NmJiYjIwNDcyOTY5OTllOjliNDkyOWJkOTFhZTkyOQ==",
+    //     },
+    //   }
+    // );
+
+    // console.log("res", response);
+    axiosPrivate.post("api/resource/Customer", "", {
       params: {
-        ...customerData,
+        customer_name: customerData.customer_name,
+        customer_type: customerData.customer_type,
+        customer_group: customerData.customer_group,
+        territory: customerData.territory,
       },
+    });
+  };
+
+  const handleUpdateData = () => {
+    axiosPrivate.put(`api/resource/Customer/${params.state}`, {
+      customer_name: customerData.customer_name,
+      customer_type: customerData.customer_type,
+      customer_group: customerData.customer_group,
+      territory: customerData.territory,
     });
   };
 
@@ -139,10 +183,12 @@ const Customer = () => {
         <Button
           className="!bg-white"
           onClick={() => {
-            handleSubmitData();
+            {
+              mode === "edit" ? handleUpdateData() : handleSubmitData();
+            }
           }}
         >
-          Save
+          {mode === "edit" ? "Update" : "Save"}
         </Button>
       </div>
       <div>

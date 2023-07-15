@@ -59,6 +59,11 @@ const Router = () => {
                 path="/customer/create"
                 element={<CreateCustomer />}
               />
+              <Route
+                index
+                path="/customer/edit"
+                element={<CreateCustomer mode="edit" />}
+              />
               {/* <Route path="/tanning-appointment" element={<Protected><TanningAppointment /></Protected>} /> */}
               <Route
                 path="/tanning-appointment"

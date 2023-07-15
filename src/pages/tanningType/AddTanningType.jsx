@@ -103,7 +103,7 @@ const AddTanningType = () => {
 					))}
 					<TextField
 						fullWidth
-						label="Select blood group"
+						label="Item Group"
 						select
 						variant="filled"
 						value={tanningType.itemGroup}

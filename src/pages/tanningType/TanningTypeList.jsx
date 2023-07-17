@@ -5,7 +5,7 @@ import { Box } from "@mantine/core";
 import { useEffect, useMemo, useState } from "react";
 import axiosPrivate from "../../api/BaseURL";
 
-const TanningSessionList = () => {
+const TanningTypeList = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
@@ -33,7 +33,7 @@ const TanningSessionList = () => {
       setIsRefetching(true);
     }
     try {
-      const response = await axiosPrivate.get(`api/resource/Therapy Session`);
+      const response = await axiosPrivate.get(`api/resource/Therapy Type`);
       setData(response.data.data);
       // setRowCount(json.meta.totalRowCount);
     } catch (error) {
@@ -60,12 +60,12 @@ const TanningSessionList = () => {
     () => [
       {
         id: "customer", //id used to define `group` column
-        header: "Tanning Session list",
+        header: "Tanning Type list",
         columns: [
           {
             accessorFn: (row) => `${row.name}`, //accessorFn used to join multiple data into a single cell
             id: "customer_name", //id is still required when using accessorFn instead of accessorKey
-            header: "Tanning Session",
+            header: "Tanning Type",
             size: 250,
             enableClickToCopy: true,
             filterVariant: "autocomplete",
@@ -113,7 +113,7 @@ const TanningSessionList = () => {
   return (
     <div className="my-2">
       <Titlebar
-        text="Tanning Session List"
+        text="Tanning Type List"
         handleClick={() => navigate("add")}
         buttonText="Add"
       />
@@ -124,4 +124,4 @@ const TanningSessionList = () => {
   );
 };
 
-export default TanningSessionList;
+export default TanningTypeList;

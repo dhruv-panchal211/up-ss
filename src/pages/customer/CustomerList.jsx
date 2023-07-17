@@ -1,44 +1,101 @@
 import { useEffect, useMemo, useState } from "react";
 import axiosPrivate from "../../api/BaseURL";
-import { Button as MUIButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Menu, Text, Title } from "@mantine/core";
-import { data } from "./data";
+import { Box } from "@mantine/core";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
+import Titlebar from "../../component/common/Titlebar";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { toast } from "react-toastify";
 
 const CustomerList = () => {
   const navigate = useNavigate();
-  const [customerData, setCustomerData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchCustomerData = async () => {
-    const res = await axiosPrivate.get(
-      `api/resource/Customer?fields=["name","customer_name","customer_group","customer_type"]&limit_page_length=1000000&limit_start=0`
-    );
-    if (res.status === 200) {
-      console.log(res, "res");
-      setCustomerData(res.data.data);
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchCustomerData();
-  }, []);
+  //Example
+  //data and fetching state
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefetching, setIsRefetching] = useState(false);
+  const [rowCount, setRowCount] = useState(0);
 
-  console.log(customerData);
+  //table state
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [sorting, setSorting] = useState([]);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [showDelete, setshowDelete] = useState(false);
+  const [deleteDataName, setDeleteDataName] = useState("");
+
+  const fetchData = async () => {
+    if (!data.length) {
+      setIsLoading(true);
+    } else {
+      setIsRefetching(true);
+    }
+    try {
+      const response = await axiosPrivate.get(
+        `api/resource/Customer?fields=["name","customer_name","customer_group","customer_type"]&limit_page_length=1000000&limit_start=0`
+      );
+      setData(response.data.data);
+      // setRowCount(json.meta.totalRowCount);
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+    setIsLoading(false);
+    setLoading(false);
+    setIsRefetching(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    columnFilters, //refetch when column filters change
+    globalFilter, //refetch when global filter changes
+    pagination.pageIndex, //refetch when page index changes
+    pagination.pageSize, //refetch when page size changes
+    sorting, //refetch when sorting changes
+  ]);
 
   const handleEditPage = (name) => {
     navigate("edit", { state: name });
   };
   const handleDeletePage = (name) => {
-    axiosPrivate.delete(`api/resource/Customer/${name}`);
+    setshowDelete(true);
+    setDeleteDataName(name);
+  };
+
+  const handleDeleteData = () => {
+    axiosPrivate
+      .delete(`api/resource/Customer/${deleteDataName}`)
+      .then(() => {
+        toast.warning("Data Deleted!");
+        setshowDelete(false);
+        setDeleteDataName("");
+        fetchData();
+      })
+      .catch(() => {
+        toast.error("Something went wrong!");
+        setshowDelete(false);
+        setDeleteDataName("");
+      });
   };
 
   const columns = useMemo(
     () => [
       {
         id: "customer", //id used to define `group` column
-        // header: "Customer Name",
+        header: "Customer Information",
         columns: [
           {
             accessorFn: (row) => `${row.customer_name}`, //accessorFn used to join multiple data into a single cell
@@ -54,11 +111,6 @@ const CustomerList = () => {
                   gap: "16px",
                 }}
               >
-                {/* <img
-                  alt="avatar"
-                  src={row.original.avatar}
-                  className="h-[30px] rounded-full"
-                /> */}
                 <div onClick={() => handleEditPage(row.original.name)}>
                   {renderedCellValue}
                 </div>
@@ -66,10 +118,11 @@ const CustomerList = () => {
             ),
           },
           {
-            // accessorKey: "email", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
-            // enableClickToCopy: true,
-            header: "Action",
-            size: 300,
+            accessorFn: (row) => `${row.customer_type}`, //accessorFn used to join multiple data into a single cell
+            id: "customer_type", //id is still required when using accessorFn instead of accessorKey
+            header: "Customer Type",
+            size: 200,
+            filterVariant: "autocomplete",
             Cell: ({ renderedCellValue, row }) => (
               <Box
                 sx={{
@@ -78,12 +131,49 @@ const CustomerList = () => {
                   gap: "16px",
                 }}
               >
-                {/* <img
-                  alt="avatar"
-                  src={row.original.avatar}
-                  className="h-[30px] rounded-full"
-                /> */}
-                <div onClick={() => handleDeletePage(row.original.name)}>
+                <div onClick={() => handleEditPage(row.original.name)}>
+                  {renderedCellValue}
+                </div>
+              </Box>
+            ),
+          },
+          {
+            accessorFn: (row) => `${row.customer_group}`, //accessorFn used to join multiple data into a single cell
+            id: "customer_group", //id is still required when using accessorFn instead of accessorKey
+            header: "Customer Group",
+            size: 250,
+            filterVariant: "autocomplete",
+            Cell: ({ renderedCellValue, row }) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "16px",
+                }}
+              >
+                <div onClick={() => handleEditPage(row.original.name)}>
+                  {renderedCellValue}
+                </div>
+              </Box>
+            ),
+          },
+
+          {
+            header: "Action",
+            size: 200,
+
+            Cell: ({ row }) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "16px",
+                }}
+              >
+                <div
+                  onClick={() => handleDeletePage(row.original.name)}
+                  className="cursor-pointer"
+                >
                   delete
                 </div>
               </Box>
@@ -91,73 +181,6 @@ const CustomerList = () => {
           },
         ],
       },
-      // {
-      //   id: "id",
-      //   header: "Job Info",
-      //   columns: [
-      //     {
-      //       accessorKey: "salary",
-      //       header: "Salary",
-      //       size: 200,
-      //       filterVariant: "range-slider",
-      //       mantineFilterRangeSliderProps: {
-      //         color: "indigo",
-      //         label: (value) =>
-      //           value?.toLocaleString?.("en-US", {
-      //             style: "currency",
-      //             currency: "USD",
-      //             minimumFractionDigits: 0,
-      //             maximumFractionDigits: 0,
-      //           }),
-      //       },
-      //       //custom conditional format and styling
-      //       Cell: ({ cell }) => (
-      //         <Box
-      //           sx={(theme) => ({
-      //             backgroundColor:
-      //               cell.getValue() < 50_000
-      //                 ? theme.colors.red[9]
-      //                 : cell.getValue() >= 50_000 && cell.getValue() < 75_000
-      //                 ? theme.colors.yellow[9]
-      //                 : theme.colors.green[9],
-      //             borderRadius: "4px",
-      //             color: "#fff",
-      //             maxWidth: "9ch",
-      //             padding: "4px",
-      //           })}
-      //         >
-      //           {cell.getValue()?.toLocaleString?.("en-US", {
-      //             style: "currency",
-      //             currency: "USD",
-      //             minimumFractionDigits: 0,
-      //             maximumFractionDigits: 0,
-      //           })}
-      //         </Box>
-      //       ),
-      //     },
-      //     {
-      //       accessorKey: "jobTitle", //hey a simple column for once
-      //       header: "Job Title",
-      //       filterVariant: "multi-select",
-      //       size: 350,
-      //     },
-      //     {
-      //       accessorFn: (row) => {
-      //         //convert to Date for sorting and filtering
-      //         const sDay = new Date(row.startDate);
-      //         sDay.setHours(0, 0, 0, 0); // remove time from date (useful if filter by equals exact date)
-      //         return sDay;
-      //       },
-      //       id: "startDate",
-      //       header: "Start Date",
-      //       filterVariant: "date-range",
-      //       sortingFn: "datetime",
-      //       enableColumnFilterModes: false, //keep this as only date-range filter with between inclusive filterFn
-      //       Cell: ({ cell }) => cell.getValue()?.toLocaleDateString(), //render Date as a string
-      //       Header: ({ column }) => <em>{column.columnDef.header}</em>, //custom header markup
-      //     },
-      //   ],
-      // },
     ],
     []
   );
@@ -174,95 +197,30 @@ const CustomerList = () => {
     initialState: { showColumnFilters: true },
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
-    // renderDetailPanel: ({ row }) => (
-    //   <Box
-    //     sx={{
-    //       display: "flex",
-    //       justifyContent: "flex-start",
-    //       alignItems: "center",
-    //       gap: "16px",
-    //       padding: "16px",
-    //     }}
-    //   >
-    //     <img
-    //       alt="avatar"
-    //       height={200}
-    //       src={row.original.avatar}
-    //       style={{ borderRadius: "50%" }}
-    //     />
-    //     <Box sx={{ textAlign: "center" }}>
-    //       <Title>Signature Catch Phrase:</Title>
-    //       <Text>&quot;{row.original.signatureCatchPhrase}&quot;</Text>
-    //     </Box>
-    //   </Box>
-    // ),
-    // renderRowActionMenuItems: () => (
-    //   <>
-    //     <Menu.Item>View Profile</Menu.Item>
-    //     <Menu.Item>Send Email</Menu.Item>
-    //   </>
-    // ),
-    // renderTopToolbarCustomActions: ({ table }) => {
-    // const handleDeactivate = () => {
-    //   table.getSelectedRowModel().flatRows.map((row) => {
-    //     alert("deactivating " + row.getValue("name"));
-    //   });
-    // };
-    // const handleActivate = () => {
-    //   table.getSelectedRowModel().flatRows.map((row) => {
-    //     alert("activating " + row.getValue("name"));
-    //   });
-    // };
-    // const handleContact = () => {
-    //   table.getSelectedRowModel().flatRows.map((row) => {
-    //     alert("contact " + row.getValue("name"));
-    //   });
-    // };
-    // return (
-    //   <div style={{ display: "flex", gap: "8px" }}>
-    //     <Button
-    //       color="red"
-    //       disabled={!table.getIsSomeRowsSelected()}
-    //       onClick={handleDeactivate}
-    //       variant="filled"
-    //     >
-    //       Deactivate
-    //     </Button>
-    //     <Button
-    //       color="green"
-    //       disabled={!table.getIsSomeRowsSelected()}
-    //       onClick={handleActivate}
-    //       variant="filled"
-    //     >
-    //       Activate
-    //     </Button>
-    //     <Button
-    //       color="blue"
-    //       disabled={!table.getIsSomeRowsSelected()}
-    //       onClick={handleContact}
-    //       variant="filled"
-    //     >
-    //       Contact
-    //     </Button>
-    //   </div>
-    // );
-    // },
+    state: {
+      // columnFilters,
+      // globalFilter,
+      isLoading,
+      // pagination,
+      // showAlertBanner: isError,
+      showProgressBars: isRefetching,
+      // sorting,
+    },
   });
 
   return (
-    <div className="m-6">
+    <div className="m-2">
       {loading ? (
         <>Loading ....</>
       ) : (
         <>
-          <div className="flex items-center justify-between">
-            <h3 className="text-white">Customer List</h3>
-            <MUIButton onClick={() => navigate("create")} className="!bg-white">
-              Create
-            </MUIButton>
-          </div>
+          <Titlebar
+            text="Customer List"
+            handleClick={() => navigate("create")}
+            buttonText="Create"
+          />
           <div>
-            {!loading && <MantineReactTable table={table} />}
+            <MantineReactTable table={table} />
             {/* {customerData.map((customer) => (
           <div key={customer.name} className="flex gap-16">
             <p>{customer.name}</p>
@@ -272,6 +230,22 @@ const CustomerList = () => {
           </div>
         </>
       )}
+      <Dialog open={showDelete}>
+        <DialogTitle>Are you sure?</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete this data?
+        </DialogContent>
+        <DialogActions>
+          <Button>Cancel</Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => handleDeleteData()}
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

@@ -4,7 +4,8 @@ import AuthContext from "./AuthContext";
 import AuthReducer from "./AuthReducer";
 
 import { LOAD_USER, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT } from "./types";
-import axiosPrivate from "../api/BaseURL";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const AuthState = (props) => {
   const initialState = {
@@ -25,17 +26,16 @@ const AuthState = (props) => {
 
   //login user
   const login = async (formData) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
     try {
-      const res = await axiosPrivate.post(
-        `${import.meta.env.VITE_BACKEND_URL}api/method/login`,
-        formData,
-        config
+      const res = await axios.post(
+        "https://megasun.bestoerp.com/api/method/login",
+        "",
+        {
+          params: {
+            usr: formData.email,
+            pwd: formData.password,
+          },
+        }
       );
 
       if (res.status === 200) {
@@ -44,17 +44,20 @@ const AuthState = (props) => {
         //   text: res?.data?.message,
         //   icon: "success",
         // });
+        toast.success("Success");
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: res.data.token,
+        });
       }
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: res.data.token,
-      });
+      return res;
     } catch (err) {
       // Swal.fire({
       //   title: "Error",
       //   text: err?.response?.data?.message,
       //   icon: "error",
       // });
+      toast.error("Invalid Credentials");
       dispatch({
         type: LOGIN_FAIL,
         payload: err?.response?.data?.message,

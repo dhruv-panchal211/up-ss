@@ -18,6 +18,9 @@ const AddTanningAppointment = lazy(() =>
 const TanningAppointmentList = lazy(() =>
   import("../pages/tanningAppoinment/TanningAppointmentList")
 );
+const TanningTypeList = lazy(() =>
+  import("../pages/tanningType/TanningTypeList")
+);
 const AddTanningType = lazy(() =>
   import("../pages/tanningType/AddTanningType")
 );
@@ -52,37 +55,107 @@ const Router = () => {
                   </Protected>
                 }
               />
-              {/* <Route path="/customer" element={<Protected><Customer /></Protected>} /> */}
-              <Route path="/customer" element={<CustomerList />} />
+              <Route
+                path="/customer"
+                element={
+                  <Protected>
+                    <CustomerList />
+                  </Protected>
+                }
+              />
+              {/* <Route path="/customer" element={<CustomerList />} /> */}
               <Route
                 index
                 path="/customer/create"
-                element={<CreateCustomer />}
+                element={
+                  <Protected>
+                    <CreateCustomer />
+                  </Protected>
+                }
               />
               <Route
                 index
                 path="/customer/edit"
-                element={<CreateCustomer mode="edit" />}
+                element={
+                  <Protected>
+                    <CreateCustomer mode="edit" />
+                  </Protected>
+                }
               />
               {/* <Route path="/tanning-appointment" element={<Protected><TanningAppointment /></Protected>} /> */}
               <Route
                 path="/tanning-appointment"
-                element={<TanningAppointmentList />}
+                element={
+                  <Protected>
+                    <TanningAppointmentList />
+                  </Protected>
+                }
               />
               <Route
                 path="/tanning-appointment/add"
-                element={<AddTanningAppointment />}
+                element={
+                  <Protected>
+                    <AddTanningAppointment />
+                  </Protected>
+                }
               />
-              <Route path="/tanning-type/add" element={<AddTanningType />} />
-              <Route path="/tanning-plan" element={<TanningPlanList />} />
-              <Route path="/tanning-plan/add" element={<AddTanningPlan />} />
-              <Route path="/tanning-session" element={<TanningSessionList />} />
+              <Route
+                path="/tanning-type"
+                element={
+                  <Protected>
+                    <TanningTypeList />
+                  </Protected>
+                }
+              />
+              <Route
+                path="/tanning-type/add"
+                element={
+                  <Protected>
+                    <AddTanningType />
+                  </Protected>
+                }
+              />
+              <Route
+                path="/tanning-plan"
+                element={
+                  <Protected>
+                    <TanningPlanList />
+                  </Protected>
+                }
+              />
+              <Route
+                path="/tanning-plan/add"
+                element={
+                  <Protected>
+                    <AddTanningPlan />
+                  </Protected>
+                }
+              />
+              <Route
+                path="/tanning-session"
+                element={
+                  <Protected>
+                    <TanningSessionList />
+                  </Protected>
+                }
+              />
               <Route
                 path="/tanning-session/add"
-                element={<AddTanningSession />}
+                element={
+                  <Protected>
+                    <AddTanningSession />
+                  </Protected>
+                }
               />
             </Route>
-            <Route path="*" element={<PageNotFound />} />
+            <Route
+              path="*"
+              element={
+                <Protected>
+                  <PageNotFound />
+                </Protected>
+              }
+            />
           </Routes>
         </BrowserRouter>
       </Suspense>

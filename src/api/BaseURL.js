@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPrivate = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_URL}`,
+  baseURL: `https://megasun.bestoerp.com/`,
   headers: {
     "Content-Type": "application/x-www-form-urlencoded",
 

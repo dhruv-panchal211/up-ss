@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import axiosPrivate from "../../api/BaseURL";
-import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Titlebar from "../../component/common/Titlebar";
 
 const TanningAppointmentList = () => {
   const navigate = useNavigate();
@@ -12,13 +12,12 @@ const TanningAppointmentList = () => {
   }, []);
 
   return (
-    <div className="m-6">
-      <div className="flex items-center justify-between">
-        <h3 className="text-white">Tanning Appointment List</h3>
-        <Button onClick={() => navigate("add")} className="!bg-white">
-          Create
-        </Button>
-      </div>
+    <div className="m-2">
+      <Titlebar
+        text="Tanning Appointment List"
+        handleClick={() => navigate("add")}
+        buttonText="Create"
+      />
     </div>
   );
 };

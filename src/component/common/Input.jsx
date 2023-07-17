@@ -1,5 +1,5 @@
-import { TextField } from "@mui/material";
-import { MenuItem } from "react-pro-sidebar";
+import { MenuItem, TextField } from "@mui/material";
+// import { TextInput, Select } from "@mantine/core";
 
 const Input = ({
   children,
@@ -11,16 +11,18 @@ const Input = ({
   setValue,
   props,
   data,
+  customClass,
 }) => {
   return (
     <>
       {type === "select" ? (
         <TextField
           fullWidth
-          label="Select blood group"
+          label={label}
           select
-          variant="filled"
-          // value={value}
+          variant="outlined"
+          value={value}
+          required={required}
           onChange={(e) => setValue(e.target.value)}
           {...props}
         >
@@ -35,19 +37,44 @@ const Input = ({
         </TextField>
       ) : (
         <TextField
-          fullWidth
           required={required}
-          variant="filled"
+          variant="outlined"
           disabled={disabled}
           type={type}
+          multiline={type === "textarea"}
+          rows={type === "textarea" ? 4 : 1}
           label={label}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => setValue(e.currentTarget.value)}
+          className={`${customClass}`}
           {...props}
         >
           {children}
         </TextField>
       )}
+      {/* {type === "select" ? (
+        <>
+          <Select
+            label={label}
+            searchable
+            nothingFound="No options"
+            data={data}
+          />
+        </>
+      ) : (
+        <TextInput
+          withAsterisk={required}
+          variant="default"
+          disabled={disabled}
+          type={type}
+          label={label}
+          value={value}
+          onChange={(e) => setValue(e.currentTarget.value)}
+          {...props}
+        >
+          {children}
+        </TextInput>
+      )} */}
     </>
   );
 };

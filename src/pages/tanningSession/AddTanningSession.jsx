@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../component/common/Input";
 import { Button, Card, Divider } from "@mui/material";
+import Titlebar from "../../component/common/Titlebar";
 // import axiosPrivate from "../../api/BaseURL";
 
 const AddTanningSession = () => {
@@ -115,10 +116,6 @@ const AddTanningSession = () => {
     },
   ];
 
-  useEffect(() => {
-    console.log("data", customerData);
-  }, [customerData]);
-
   const handleSubmitData = () => {
     // axiosPrivate.post("api/resource/Cusomer", "", {
     //   params: {
@@ -128,31 +125,21 @@ const AddTanningSession = () => {
   };
 
   return (
-    <div className="m-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl text-white ">Tanning Session</h3>
-        <Button
-          className="!bg-white"
-          onClick={() => {
-            handleSubmitData();
-          }}
-        >
-          Save
-        </Button>
-      </div>
+    <div className="m-2">
+      <Titlebar
+        text="Tanning Session"
+        buttonText="Save"
+        handleClick={handleSubmitData}
+      />
       <div>
-        <div className="grid grid-cols-2 gap-6">
-          {customerForm.map((field) => (
-            <Card
-              key={field.id}
-              elevation={16}
-              className="col-span-1 !rounded-2xl"
-            >
+        <div className="grid gap-6 lg:grid-cols-2 sm:grid-cols-1 md:grid-cols-2 card">
+          {customerForm.map((field, index) => (
+            <React.Fragment key={index}>
               <Input
                 label={
                   field.id === "fullName" &&
-                  (customerData["firstName"].length > 0 ||
-                    customerData["lastName"].length > 0)
+                  (customerData["first_name"].length > 0 ||
+                    customerData["last_name"].length > 0)
                     ? null
                     : field.label
                 }
@@ -162,7 +149,9 @@ const AddTanningSession = () => {
                 required={field.required}
                 value={
                   field.id === "fullName"
-                    ? customerData["firstName"] + " " + customerData["lastName"]
+                    ? customerData["first_name"] +
+                      " " +
+                      customerData["last_name"]
                     : customerData[field.id]
                 }
                 setValue={(val) =>
@@ -170,7 +159,7 @@ const AddTanningSession = () => {
                 }
                 data={field.data}
               />
-            </Card>
+            </React.Fragment>
           ))}
         </div>
         <Divider className="!my-8 !border-white" />
@@ -179,18 +168,14 @@ const AddTanningSession = () => {
         <h3 className="text-xl text-white ">Details</h3>
       </div>
       <div>
-        <div className="grid grid-cols-2 gap-6">
-          {detailsForm.map((field) => (
-            <Card
-              key={field.id}
-              elevation={16}
-              className="col-span-1 !rounded-2xl"
-            >
+        <div className="grid gap-6 lg:grid-cols-2 sm:grid-cols-1 md:grid-cols-2 card">
+          {detailsForm.map((field, index) => (
+            <React.Fragment key={index}>
               <Input
                 label={
                   field.id === "fullName" &&
-                  (customerData["firstName"].length > 0 ||
-                    customerData["lastName"].length > 0)
+                  (customerData["first_name"].length > 0 ||
+                    customerData["last_name"].length > 0)
                     ? null
                     : field.label
                 }
@@ -200,7 +185,9 @@ const AddTanningSession = () => {
                 required={field.required}
                 value={
                   field.id === "fullName"
-                    ? customerData["firstName"] + " " + customerData["lastName"]
+                    ? customerData["first_name"] +
+                      " " +
+                      customerData["last_name"]
                     : customerData[field.id]
                 }
                 setValue={(val) =>
@@ -208,25 +195,21 @@ const AddTanningSession = () => {
                 }
                 data={field.data}
               />
-            </Card>
+            </React.Fragment>
           ))}
         </div>
       </div>
       <Divider className="!my-8 !border-white" />
 
       <div>
-        <div className="grid grid-cols-2 gap-6">
-          {totalCountForm.map((field) => (
-            <Card
-              key={field.id}
-              elevation={16}
-              className="col-span-1 !rounded-2xl"
-            >
+        <div className="grid gap-6 lg:grid-cols-2 sm:grid-cols-1 md:grid-cols-2 card">
+          {totalCountForm.map((field, index) => (
+            <React.Fragment key={index}>
               <Input
                 label={
                   field.id === "fullName" &&
-                  (customerData["firstName"].length > 0 ||
-                    customerData["lastName"].length > 0)
+                  (customerData["first_name"].length > 0 ||
+                    customerData["last_name"].length > 0)
                     ? null
                     : field.label
                 }
@@ -236,7 +219,9 @@ const AddTanningSession = () => {
                 required={field.required}
                 value={
                   field.id === "fullName"
-                    ? customerData["firstName"] + " " + customerData["lastName"]
+                    ? customerData["first_name"] +
+                      " " +
+                      customerData["last_name"]
                     : customerData[field.id]
                 }
                 setValue={(val) =>
@@ -244,7 +229,7 @@ const AddTanningSession = () => {
                 }
                 data={field.data}
               />
-            </Card>
+            </React.Fragment>
           ))}
         </div>
       </div>

@@ -6,7 +6,7 @@ function Protected({ children }) {
   const authContext = useContext(AuthContext);
   const { isAuth } = authContext;
 
-  if (isAuth) {
+  if (!isAuth) {
     return <Navigate to="/login" replace />;
   }
   return children;

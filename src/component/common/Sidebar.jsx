@@ -1,11 +1,74 @@
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 
 const SidebarComponent = () => {
+  const navigate = useNavigate();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [collapsed, handleCollapsedChange] = useState(false);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  });
   return (
-    <div className="h-[100vh] overflow-y-scroll  border-r">
-      <Sidebar>
+    <div className="h-[100vh] overflow-y-scroll border-r">
+      <Sidebar collapsed={windowWidth < 1024 || collapsed}>
+        <Menu
+          iconShape="circle"
+          menuItemStyles={{
+            button: () => {
+              // if (level === 0 || level === 1) {
+              return {
+                color: "white",
+                backgroundColor: "#0F76BC",
+                "&:hover": {
+                  backgroundColor: "#0F76BC !important",
+                  color: "white !important",
+                  fontWeight: "bold !important",
+                },
+              };
+              // }
+            },
+          }}
+        >
+          {collapsed ? (
+            <MenuItem
+              icon={<KeyboardDoubleArrowRightIcon />}
+              onClick={() => handleCollapsedChange(!collapsed)}
+            ></MenuItem>
+          ) : (
+            <MenuItem
+              suffix={<KeyboardDoubleArrowLeftIcon />}
+              onClick={() => handleCollapsedChange(!collapsed)}
+            >
+              <div className="flex justify-center py-3">
+                <span
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                  className="text-center"
+                >
+                  <img
+                    src="https://megasun.bestoerp.com/files/IMG-20230702-WA0007.jpg"
+                    alt="Logo"
+                    className="w-[100px] max-h-[40px]"
+                  />
+                </span>
+              </div>
+            </MenuItem>
+          )}
+        </Menu>
         <Menu
           menuItemStyles={{
             button: ({ level, active }) => {
@@ -30,7 +93,13 @@ const SidebarComponent = () => {
             },
           }}
         >
-          <SubMenu label="Quick Sale">
+          <MenuItem
+            component={<Link to="/" />}
+            icon={<DashboardIcon fontSize="small" />}
+          >
+            Dashboard
+          </MenuItem>
+          <SubMenu icon={<DashboardIcon fontSize="small" />} label="Quick Sale">
             <MenuItem
               component={<Link to="/customer" />}
               icon={<DashboardIcon fontSize="small" />}
@@ -44,7 +113,7 @@ const SidebarComponent = () => {
               Tanning Appointment
             </MenuItem>
             <MenuItem
-              component={<Link to="tanning-type/add" />}
+              component={<Link to="tanning-type" />}
               icon={<DashboardIcon fontSize="small" />}
             >
               Tanning Type
@@ -64,14 +133,8 @@ const SidebarComponent = () => {
             <MenuItem icon={<DashboardIcon fontSize="small" />}>
               Sales Invoice
             </MenuItem>
-            <MenuItem
-              component={<Link to="/" />}
-              icon={<DashboardIcon fontSize="small" />}
-            >
-              Dashboard
-            </MenuItem>
           </SubMenu>
-          <SubMenu label="Master">
+          <SubMenu icon={<DashboardIcon fontSize="small" />} label="Master">
             <MenuItem icon={<DashboardIcon fontSize="small" />}>
               Customer
             </MenuItem>
@@ -88,7 +151,10 @@ const SidebarComponent = () => {
               Package
             </MenuItem>
           </SubMenu>
-          <SubMenu label="Transaction">
+          <SubMenu
+            icon={<DashboardIcon fontSize="small" />}
+            label="Transaction"
+          >
             <MenuItem icon={<DashboardIcon fontSize="small" />}>
               Appointment
             </MenuItem>
@@ -102,7 +168,7 @@ const SidebarComponent = () => {
               Sales Invoice
             </MenuItem>
           </SubMenu>
-          <SubMenu label="Reports">
+          <SubMenu icon={<DashboardIcon fontSize="small" />} label="Reports">
             <MenuItem icon={<DashboardIcon fontSize="small" />}>
               Appointment
             </MenuItem>

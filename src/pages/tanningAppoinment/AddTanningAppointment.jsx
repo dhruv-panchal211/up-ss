@@ -1,15 +1,15 @@
 import {
   Button,
-  Card,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
 } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import Input from "../../component/common/Input";
 import CloseIcon from "@mui/icons-material/Close";
+import Titlebar from "../../component/common/Titlebar";
 
 const TanningAppointment = () => {
   const [showModal, setShowModal] = useState(false);
@@ -137,21 +137,16 @@ const TanningAppointment = () => {
   ];
 
   return (
-    <div className="m-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl text-white">New Tanning Appointment</h3>
-        <Button className="!bg-white" onClick={() => setShowModal(true)}>
-          Check Avilability
-        </Button>
-      </div>
+    <div className="m-2">
+      <Titlebar
+        text="New Tanning Appointment"
+        handleClick={() => setShowModal(true)}
+        buttonText="Check Avilability"
+      />
       <div>
-        <div className="grid grid-cols-2 gap-6">
-          {appointmentForm.map((field) => (
-            <Card
-              key={field.id}
-              elevation={16}
-              className="col-span-1 !rounded-2xl"
-            >
+        <div className="grid gap-6 lg:grid-cols-2 sm:grid-cols-1 md:grid-cols-2 card">
+          {appointmentForm.map((field, index) => (
+            <React.Fragment key={index}>
               <Input
                 label={field.label}
                 className="w-full rounded-2xl"
@@ -163,15 +158,15 @@ const TanningAppointment = () => {
                   setAppointmentData((prev) => ({ ...prev, [field.id]: val }))
                 }
               />
-            </Card>
+            </React.Fragment>
           ))}
         </div>
         <hr className="my-8" />
         <div>
           <h3 className="mb-6 text-xl text-white">Appointment Details</h3>
-          <div className="grid grid-cols-2 gap-6">
-            {appointmentDetailsForm.map((field) => (
-              <Card key={field.id} elevation={16} className="!rounded-2xl">
+          <div className="grid gap-6 lg:grid-cols-2 sm:grid-cols-1 md:grid-cols-2 card">
+            {appointmentDetailsForm.map((field, index) => (
+              <React.Fragment key={index}>
                 <Input
                   label={field.label}
                   className="w-full rounded-2xl"
@@ -183,7 +178,7 @@ const TanningAppointment = () => {
                     setAppointmentData((prev) => ({ ...prev, [field.id]: val }))
                   }
                 />
-              </Card>
+              </React.Fragment>
             ))}
           </div>
         </div>

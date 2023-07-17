@@ -9,12 +9,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import axiosPrivate from "../api/BaseURL";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
-  const { isAuth } = authContext;
+  const { isAuth, login } = authContext;
 
   const [formData, setFormData] = useState({
     email: "",
@@ -31,8 +30,7 @@ const LoginPage = () => {
     if (isAuth) {
       navigate("/");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuth]);
+  }, [isAuth, navigate]);
 
   const validateSubmit = (e) => {
     e.preventDefault();
@@ -50,13 +48,7 @@ const LoginPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("Submit", formData);
-    axiosPrivate.post("api/method/login", "", {
-      params: {
-        usr: formData.email,
-        pwd: formData.password,
-      },
-    });
+    await login(formData);
   };
 
   return (
@@ -102,7 +94,10 @@ const LoginPage = () => {
                   email: e.target.value,
                 });
               }}
+              error={errors.email}
+              helperText={errors.email}
             />
+
             <TextField
               fullWidth
               autoFocus
@@ -120,6 +115,8 @@ const LoginPage = () => {
                   password: e.target.value,
                 });
               }}
+              error={errors.password}
+              helperText={errors.password}
             />
             <Box sx={{ mt: 2 }}>
               <Button fullWidth size="large" type="submit" variant="contained">

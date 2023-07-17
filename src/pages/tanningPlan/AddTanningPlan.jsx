@@ -1,26 +1,90 @@
+import { useState } from "react";
 import { Divider, Typography } from "@mui/material";
 import Input from "../../component/common/Input";
+import axiosPrivate from "../../api/BaseURL";
 import Titlebar from "../../component/common/Titlebar";
 
 const AddTanningPlan = () => {
+  const [tanningPlan, setTanningPlan] = useState({
+    planName: "",
+    itemCode: "",
+    itemName: "",
+    itemGroup: "",
+  });
+  const itemGroup = ["Consumable", "Drug", "Laboratory", "Products"];
+
+  const itemDetails = [
+    {
+      id: "itemCode",
+      label: "Item Code",
+      type: "text",
+    },
+    {
+      id: "itemName",
+      label: "Item Name",
+      type: "text",
+    },
+    {
+      id: "itemDescription",
+      label: "Item Description",
+      type: "textarea",
+    },
+    {
+      id: "itemGroup",
+      label: "Item Group",
+      type: "select",
+      data: itemGroup,
+    },
+  ];
+
+  const handleSubmit = () => {
+    axiosPrivate.post("api/resource/Therapy Plan Template", "", {
+      params: {
+        plan_name: tanningPlan.planName,
+        item: tanningPlan.itemCode,
+        item_name: tanningPlan.itemName,
+        item_group: tanningPlan.itemGroup,
+      },
+    });
+  };
+
   return (
-    <div className="my-2">
+    <div className="my-6">
       <Titlebar
         text="New Tanning Plan Template"
-        handleClick={() => {}}
+        handleClick={() => {
+          handleSubmit();
+        }}
         buttonText="Save"
       />
       <div className="grid gap-6 card">
-        <Input label="Plan name" fullWidth />
+        <Input
+          label="Plan Name"
+          value={tanningPlan.planName}
+          setValue={(val) =>
+            setTanningPlan((prev) => ({ ...prev, planName: val }))
+          }
+        />
       </div>
       <Divider className="!border-white !my-6" />
       <div className="w-full">
-        <Typography className="text-white">Linked item Details</Typography>
+        <div className="my-4 text-white">
+          <Typography>Linked Item Details</Typography>
+        </div>
         <div className="grid gap-6 lg:grid-cols-2 sm:grid-cols-1 md:grid-cols-2 card">
-          <Input label="Item code" />
-          <Input label="Item name" />
-          <Input label="Item group" />
-          <Input label="Item Description" />
+          {itemDetails.map((ele) => (
+            <Input
+              className="col-span-1"
+              key={ele.id}
+              label={ele.label}
+              type={ele.type}
+              value={tanningPlan[ele.id]}
+              data={ele.data}
+              setValue={(val) =>
+                setTanningPlan((prev) => ({ ...prev, [ele.id]: val }))
+              }
+            />
+          ))}
         </div>
       </div>
     </div>
